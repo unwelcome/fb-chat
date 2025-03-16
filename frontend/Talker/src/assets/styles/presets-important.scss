@@ -21,3 +21,19 @@
     }
   }
 }
+
+.input{
+  padding: 4px 8px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--input-color);
+
+  &:focus{
+    outline: 2px solid var(--input-color-outline);
+  }
+
+  &-incorrect{
+    outline: 2px solid red;
+  }
+}

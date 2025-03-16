@@ -1,0 +1,52 @@
+<template>
+
+  <div class="flex flex-col justify-start items-start">
+    <label class=" cursor-pointer" :for="'login-input-' + id">{{ label }}</label>
+    <input 
+      type="text" 
+      class="input" 
+      :class="{'input-incorrect': errorMesssage !== ''}"
+      :id="'login-input-' + id" 
+      :placeholder="placeholder" 
+      v-model="value" 
+      @input="updateValue()"
+      />
+  </div>
+  <div class="h-4">
+    <p class=" text-xs text-red-600">{{ errorMesssage }}</p>
+  </div>
+
+</template>
+<script lang="ts">
+export default{
+  emits: ['inputChange'],
+  props:{
+    id:{
+      type: String,
+      required: true,
+    },
+    placeholder: {
+      type: String,
+      required: true,
+    },
+    label: {
+      type: String,
+      required: true,
+    },
+    errorMesssage: {
+      type: String,
+      required: true,
+    }
+  },
+  data() {
+    return{
+      value: '' as String,
+    }
+  },
+  methods: {
+    updateValue(){
+      this.$emit('inputChange', this.value);
+    }
+  }
+}
+</script>
