@@ -1,0 +1,22 @@
+* {
+  font-family: "Rubik", sans-serif, Arial, Helvetica;
+  font-weight: 400;
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 20px;
+  border-radius: 10px;
+  color: var(--text-color-btn);
+  cursor: pointer;
+  transition: background-color 0.15s ease-in;
+}
+.btn-main {
+  background-color: var(--btn-color-main);
+}
+.btn-main:hover {
+  background-color: var(--btn-color-main-hover);
+}
+.btn-main:active {
+  background-color: var(--btn-color-main-active);
+}/*# sourceMappingURL=presets-important.css.map */

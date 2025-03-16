@@ -1,0 +1,15 @@
+@layer layer-fonts, layer-presets, layer-tailwind, layer-presets-important, layer-main;
+
+@import url("./presets.css") layer(layer-presets);
+@import url("./presets-important.css") layer(layer-presets-important);
+@import url("./fonts.css") layer(layer-fonts);
+@import "tailwindcss" layer(layer-tailwind);
+
+@layer layer-main{
+
+
+  body{
+    background-color: var(--bg-color-0);
+  }
+
+}
