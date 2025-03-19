@@ -3,8 +3,8 @@
   <div class="flex flex-col justify-start items-start">
     <label class=" cursor-pointer" :for="'login-input-' + id">{{ label }}</label>
     <input 
-      type="text" 
-      class="input" 
+      :type=type 
+      class="input w-full" 
       :class="{'input-incorrect': errorMesssage !== ''}"
       :id="'login-input-' + id" 
       :placeholder="placeholder" 
@@ -22,6 +22,10 @@ export default{
   emits: ['inputChange'],
   props:{
     id:{
+      type: String,
+      required: true,
+    },
+    type: {
       type: String,
       required: true,
     },

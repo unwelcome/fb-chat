@@ -4,9 +4,9 @@
       <h2 class="text-xl text-center">Welcome to Talker!</h2>
       <p class="text-lg text-justify mb-5">To use Talker, please register </p>
       <div class="flex flex-row gap-5 justify-center items-center">
-        <input type="button" class="btn btn-main bg-slate-400" value="Log In" @click="$router.push({name: 'LoginPage'})"/>
+        <input type="button" class="btn btn-main" value="Log In" @click="$router.push({name: 'LoginPage'})"/>
         <p class="text-lg text-color-description">or</p>
-        <input type="button" class="btn btn-main" value="Sign In"/>
+        <input type="button" class="btn btn-main" value="Sign Up" @click="$router.push({name: 'SignUpPage'})"/>
       </div>
     </div>
   </div>
