@@ -1,0 +1,27 @@
+{
+  "name": "fb-chat",
+  "version": "1.0.0",
+  "description": "Welcome to Talker!",
+  "main": "index.js",
+  "scripts": {
+    "dev:frontend": "cd frontend/Talker && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build": "cd frontend/Talker && npm run build",
+    "start": "npm run build && cd backend && npm run prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unwelcome/fb-chat.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unwelcome/fb-chat/issues"
+  },
+  "homepage": "https://github.com/unwelcome/fb-chat#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
