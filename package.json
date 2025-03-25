@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/unwelcome/fb-chat#readme",
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7"
   }
 }

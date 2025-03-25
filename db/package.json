@@ -1,0 +1,19 @@
+{
+  "name": "bd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "migrate:up": "db-migrate up",
+    "migrate:down": "db-migrate down",
+    "migrate": "db-migrate create create_chat_members_table --sql-file"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "db-migrate": "^0.11.14",
+    "db-migrate-pg": "^1.5.2",
+    "dotenv": "^16.4.7"
+  }
+}

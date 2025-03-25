@@ -1,0 +1,53 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  id integer [primary key]
+  login varchar [not null]
+  password varchar [not null]
+  name varchar [not null]
+  surname varchar
+  tagname varchar [not null]
+  is_online boolean [not null]
+  last_seen timestamp
+}
+
+Table chats {
+  id integer [primary key]
+  name varchar [not null]
+  photo_url varchar
+  creator_id integer
+}
+
+Table chat_members {
+  id integer [primary key]
+  chat_id integer
+  user_id integer
+}
+
+Table messages {
+  id integer [primary key]
+  author_id integer
+  text text [not null]
+  time_send timestamp
+  chat_id integer
+  is_corrected boolean
+}
+
+Table message_reactions {
+  id integer [primary key]
+  message_id integer
+  author_id integer
+  text varchar [not null]
+}
+
+Ref: chats.creator_id > users.id
+Ref: messages.chat_id > chats.id
+Ref: messages.author_id > users.id
+Ref: chat_members.chat_id > chats.id
+Ref: chat_members.user_id > users.id
+Ref: message_reactions.author_id > users.id
+Ref: message_reactions.message_id > messages.id
+
+
+
