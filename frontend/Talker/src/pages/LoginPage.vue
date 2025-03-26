@@ -7,7 +7,7 @@
         <loginInput :id="'1'" :type="'text'" :placeholder="'Login'" :label="'Your login'" @input-change="validLoginInput" :error-messsage="loginValid.error" />
         <loginInput :id="'2'" :type="'password'" :placeholder="'Password'" :label="'Your password'" @input-change="validPasswordInput" :error-messsage="passwordValid.error"/>
       </div>
-      <input type="button" class="btn btn-main" value="LogIn"/>
+      <input type="button" class="btn btn-main" value="LogIn" @click="initLogIn"/>
       <p class=" text-xs text-color-description text-center">
         Don't have an account? 
         <span @click="$router.push({name: 'SignUpPage'})" class="text-color-link cursor-pointer">Create now!</span>
@@ -16,9 +16,15 @@
   </div>
 </template>
 <script lang="ts">
-import loginInput from '@/shared/loginInput.vue';
+
+import { mapStores } from 'pinia';
+import { API_LogIn } from '@/api/api';
 import { ValidUserLogin, ValidUserPassword } from '@/helpers/validator';
-import { type IValidator } from '@/helpers/constants';
+import { StatusCodes, type IValidator, type ILogIn } from '@/helpers/constants';
+import { useStatusWindowStore } from '@/stores/statusWindowStore';
+
+import loginInput from '@/shared/loginInput.vue';
+
 export default {
   components:{
     loginInput,
@@ -29,12 +35,46 @@ export default {
       passwordValid: {value: '', error: ''} as IValidator,
     }
   },
+  computed: {
+    ...mapStores(useStatusWindowStore),
+  },
   methods: {
     validLoginInput(value: string){
       this.loginValid = ValidUserLogin(value);
     },
     validPasswordInput(value: string){
       this.passwordValid = ValidUserPassword(value);
+    },
+    initLogIn(){
+      if(this.loginValid.value !== '' && this.passwordValid.value !== '') {
+        const stID = this.statusWindowStore.showStatusWindow(StatusCodes.loading, 'Verifying...', -1);
+        
+        const body: ILogIn = {
+          login: this.loginValid.value,
+          password: this.passwordValid.value,
+        };
+
+        API_LogIn(body)
+        .then((res: any) => {
+          this.statusWindowStore.deteleStatusWindow(stID);
+          this.statusWindowStore.showStatusWindow(StatusCodes.success, 'You are verified successfully!');
+
+          document.cookie = `access_token=${res.data.jwt}; expires=${Math.floor(Date.now() / 1000) + (60 * 2)};`;
+
+          this.$router.push({name: 'SecretPage'});
+        })
+        .catch((err) => {
+          this.statusWindowStore.deteleStatusWindow(stID);
+          this.statusWindowStore.showStatusWindow(StatusCodes.error, 'User not found!');
+        })
+      }
+
+      if(this.loginValid.value === ''){
+        this.statusWindowStore.showStatusWindow(StatusCodes.error, 'Login is missed!', 2000);
+      }
+      if(this.passwordValid.value === ''){
+        this.statusWindowStore.showStatusWindow(StatusCodes.error, 'Password is missed!', 2000);
+      }
     }
   }
 }

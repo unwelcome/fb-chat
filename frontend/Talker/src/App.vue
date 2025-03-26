@@ -1,22 +1,19 @@
 <template>
-  <p class="text-2xl absolute">Server send: '{{ message }}'</p>
+  <StatusWindow />
   <RouterView />
 </template>
 <script lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import { mapStores } from 'pinia';
+import { useStatusWindowStore } from './stores/statusWindowStore';
+import StatusWindow from './widgets/statusWindow.vue';
 
 export default{
-  data() {
-    return {
-      message: '',
-    }
+  components: {
+    StatusWindow
   },
-  mounted() {
-    fetch('/api/data')
-    .then((response) => response.json())
-    .then((data) => {
-      this.message = data.message;
-    });
+  computed: {
+    ...mapStores(useStatusWindowStore),
   },
 };
 

@@ -75,4 +75,13 @@
 
 .text-color-link {
   color: var(--text-color-link);
+}
+
+@keyframes timeLine {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0px;
+  }
 }/*# sourceMappingURL=presets.css.map */
