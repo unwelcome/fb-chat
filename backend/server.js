@@ -40,6 +40,32 @@ function checkUserExist(login, password=-1){
   return false;
 }
 
+//jwt middleware
+function checkJWT(req, res, next){
+  const [_, token] = req.headers.authorization.trim().split(' ');
+
+  if(token === undefined){
+    res.status(400).json({message: 'Invalid JWT!'});
+    return;
+  }
+
+  JWT.verify(token, JWT_KEY, function(err, decoded) {
+    if(!decoded){
+      res.status(401).json({message: 'The token has expired'});
+      return false;
+    }
+    else {
+      if(checkUserExist(decoded.login, decoded.password)){
+        next();
+      }
+      else{
+        res.status(403).json({message: 'User not found!'});
+        return false;
+      }
+    }
+  });
+}
+
 // API-роуты
 app.get('/api/data', (req, res) => {
   res.json({ message: 'Hello from Express mzfk!' });
@@ -81,27 +107,9 @@ app.post('/api/signup', (req, res) => {
   } 
 });
 
-app.get('/api/secret', (req, res) => {
-  const [_, token] = req.headers.authorization.trim().split(' ');
+app.get('/api/secret', checkJWT, (req, res) => {
 
-  if(token === undefined){
-    res.status(400).json({message: 'Invalid JWT!'});
-    return;
-  }
-
-  JWT.verify(token, JWT_KEY, function(err, decoded) {
-    if(!decoded){
-      res.status(401).json({message: 'The token has expired'});
-    }
-    else{
-      if(checkUserExist(decoded.login, decoded.password)){
-        res.status(200).json({secret: 'PHINEAS\'S PLAKTYPUS IS A PERRY THE PLATYPUS!!!'});
-      }
-      else{
-        res.status(403).json({message: 'User not found!'});
-      }
-    }
-  });
+  res.status(200).json({secret: 'PHINEAS\'S PLAKTYPUS IS A PERRY THE PLATYPUS!!!'});
 
 });
 
