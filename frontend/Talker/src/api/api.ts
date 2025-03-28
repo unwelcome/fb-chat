@@ -35,7 +35,7 @@ export function API_LogIn(data: ILogIn) {
 //получение топ сикрет информейшн
 export function API_GetSecretData(){
   return new Promise((resolve, reject) => {
-    axios.get(`${API}/secret`,  {
+    axios.get(`${API}/auth/secret`,  {
       headers: {
         Authorization: 'Bearer ' + GET_COOKIE('access_token'),
       }
