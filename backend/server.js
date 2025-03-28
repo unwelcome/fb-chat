@@ -5,7 +5,6 @@ const CryptoJS = require("crypto-js");
 require('dotenv').config();
 const bodyParser = require('body-parser');
 var JWT = require('jsonwebtoken');
-const { decode } = require('punycode');
 
 const app = express();
 const PORT = 3000;

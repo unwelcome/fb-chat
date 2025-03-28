@@ -17,11 +17,10 @@
 </template>
 <script lang="ts">
 
-import { mapStores } from 'pinia';
 import { API_LogIn } from '@/api/api';
 import { ValidUserLogin, ValidUserPassword } from '@/helpers/validator';
-import { StatusCodes, type IValidator, type ILogIn } from '@/helpers/constants';
-import { useStatusWindowStore } from '@/stores/statusWindowStore';
+import { type IValidator, type ILogIn } from '@/helpers/constants';
+import { useStatusWindowAPI, StatusCodes } from '@/widgets/StatusWindow/statusWindowAPI';
 
 import loginInput from '@/shared/loginInput.vue';
 
@@ -31,12 +30,10 @@ export default {
   },
   data(){
     return{
+      statusWindowAPI: useStatusWindowAPI(),
       loginValid: {value: '', error: ''} as IValidator,
       passwordValid: {value: '', error: ''} as IValidator,
     }
-  },
-  computed: {
-    ...mapStores(useStatusWindowStore),
   },
   methods: {
     validLoginInput(value: string){
@@ -47,7 +44,7 @@ export default {
     },
     initLogIn(){
       if(this.loginValid.value !== '' && this.passwordValid.value !== '') {
-        const stID = this.statusWindowStore.showStatusWindow(StatusCodes.loading, 'Verifying...', -1);
+        const stID = this.statusWindowAPI.createStatusWindow(StatusCodes.loading, 'Verifying...', -1);
         
         const body: ILogIn = {
           login: this.loginValid.value,
@@ -56,24 +53,24 @@ export default {
 
         API_LogIn(body)
         .then((res: any) => {
-          this.statusWindowStore.deteleStatusWindow(stID);
-          this.statusWindowStore.showStatusWindow(StatusCodes.success, 'You are verified successfully!');
+          this.statusWindowAPI.deleteStatusWindow(stID);
+          this.statusWindowAPI.createStatusWindow(StatusCodes.success, 'You are verified successfully!');
 
           document.cookie = `access_token=${res.data.jwt}; expires=${Math.floor(Date.now() / 1000) + (60 * 2)};`;
 
           this.$router.push({name: 'SecretPage'});
         })
         .catch((err) => {
-          this.statusWindowStore.deteleStatusWindow(stID);
-          this.statusWindowStore.showStatusWindow(StatusCodes.error, 'User not found!');
+          this.statusWindowAPI.deleteStatusWindow(stID);
+          this.statusWindowAPI.createStatusWindow(StatusCodes.error, 'User not found!');
         })
       }
 
       if(this.loginValid.value === ''){
-        this.statusWindowStore.showStatusWindow(StatusCodes.error, 'Login is missed!', 2000);
+        this.statusWindowAPI.createStatusWindow(StatusCodes.error, 'Login is missed!', 2000);
       }
       if(this.passwordValid.value === ''){
-        this.statusWindowStore.showStatusWindow(StatusCodes.error, 'Password is missed!', 2000);
+        this.statusWindowAPI.createStatusWindow(StatusCodes.error, 'Password is missed!', 2000);
       }
     }
   }

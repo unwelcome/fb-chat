@@ -1,17 +1,5 @@
 export const DEVMODE = true;
 export const API = '/api';
-export const StatusWindowTime = 2000;
-
-export enum StatusCodes {
-  'error', 'info', 'loading', 'success'
-};
-
-export interface IStatusWindow{
-  id: number,
-  status: StatusCodes,
-  text: string,
-  time: number,
-};
 
 export interface IValidator{
   value: string,

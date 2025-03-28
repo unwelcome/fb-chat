@@ -2,7 +2,7 @@
   <div class="absolute w-full flex flex-col items-center top-16 gap-y-1 z-50">
     <TransitionGroup name="list">
       <div
-        v-for="item in statusWindowStore.statusWindowList"
+        v-for="item in statusWindowApi.getAllStatusWindows"
         :key="item.id"
         class="flex flex-col items-center p-1 rounded-md"
         :class="{
@@ -16,22 +16,22 @@
             <img
               v-if="isError(item.status)"
               class="w-7 h-7"
-              src="../assets/icons/icon-error.svg"
+              src="@/assets/icons/icon-error.svg"
             />
             <img
               v-else-if="isSuccess(item.status)"
               class="w-7 h-7"
-              src="../assets/icons/icon-success.svg"
+              src="@/assets/icons/icon-success.svg"
             />
             <img
               v-else-if="isLoading(item.status)"
               class="w-7 h-7"
-              src="../assets/icons/icon-loading.svg"
+              src="@/assets/icons/icon-loading.svg"
             />
             <img
               v-else-if="isInfo(item.status)"
               class="w-7 h-7"
-              src="../assets/icons/icon-info.svg"
+              src="@/assets/icons/icon-info.svg"
             />
           </div>
           <div class="text-slate-50">
@@ -45,13 +45,13 @@
 </template>
 <script lang="ts">
 
-import { mapStores } from "pinia";
-import { useStatusWindowStore } from "@/stores/statusWindowStore";
-import { StatusCodes } from "@/helpers/constants";
+import { StatusCodes, useStatusWindowAPI } from "../statusWindowAPI";
 
 export default {
-  computed: {
-    ...mapStores(useStatusWindowStore),
+  data() {
+    return{
+      statusWindowApi: useStatusWindowAPI(),
+    }
   },
   methods: {
     isLoading(status: StatusCodes): Boolean{
