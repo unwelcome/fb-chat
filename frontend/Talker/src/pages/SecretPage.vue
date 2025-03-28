@@ -21,7 +21,7 @@
 </template>
 <script lang="ts">
 import { API_GetSecretData } from '@/api/api';
-import { useStatusWindowAPI, StatusCodes } from '@/widgets/StatusWindow/statusWindowAPI';
+import { useStatusWindowAPI } from '@/widgets/StatusWindow/statusWindowAPI';
 
 export default {
   data() {
@@ -31,11 +31,11 @@ export default {
     }
   },
   mounted() {
-    this.StatusWindowAPI.createStatusWindow(StatusCodes.info, 'You have only 2 minutes to see this information!!!', 4000);
+    this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.info, 'You have only 2 minutes to see this information!!!', 4000);
   },
   methods: {
     loadSecret(){
-      const stID = this.StatusWindowAPI.createStatusWindow(StatusCodes.loading, 'Loading secret...', -1);
+      const stID = this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.loading, 'Loading secret...', -1);
 
       API_GetSecretData()
       .then((res: any) => {
@@ -45,10 +45,10 @@ export default {
       .catch(err => {
         this.StatusWindowAPI.deleteStatusWindow(stID);
         switch(err.status){
-          case 400: this.StatusWindowAPI.createStatusWindow(StatusCodes.error, 'Invalid token!'); break;
-          case 401: this.StatusWindowAPI.createStatusWindow(StatusCodes.error, 'The token has expired!'); break;
-          case 403: this.StatusWindowAPI.createStatusWindow(StatusCodes.error, 'Invalid token!'); break;
-          default: this.StatusWindowAPI.createStatusWindow(StatusCodes.error, 'IDK What Went Wrong!'); break;
+          case 400: this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'Invalid token!'); break;
+          case 401: this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'The token has expired!'); break;
+          case 403: this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'Invalid token!'); break;
+          default: this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'IDK What Went Wrong!'); break;
         }
 
         this.$router.push({name: 'WelcomePage'});
@@ -56,7 +56,7 @@ export default {
     },
     resetCookie(){
       document.cookie = `access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
-      this.StatusWindowAPI.createStatusWindow(StatusCodes.success, 'Cookies reseted!');
+      this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.success, 'Cookies reseted!');
     },
   }
 };

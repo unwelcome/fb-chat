@@ -94,9 +94,9 @@ const jwtCheckController = (req, res, next) => {
 // });
 
 module.exports = {
-    sendHello,
-    loginController,
-    signUpController,
-    secretController,
-    jwtCheckController
+  sendHello,
+  loginController,
+  signUpController,
+  secretController,
+  jwtCheckController
 };

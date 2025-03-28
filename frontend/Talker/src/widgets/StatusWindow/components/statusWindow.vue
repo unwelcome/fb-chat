@@ -1,84 +1,86 @@
 <template>
-  <div class="absolute w-full flex flex-col items-center top-16 gap-y-1 z-50">
+  <div class="status-window-wrapper">
     <TransitionGroup name="list">
-      <div
-        v-for="item in statusWindowApi.getAllStatusWindows"
-        :key="item.id"
-        class="flex flex-col items-center p-1 rounded-md"
-        :class="{
-          'bg-amber-500': isLoading(item.status),
-          'bg-green-600': isSuccess(item.status),
-          'bg-red-500': isError(item.status),
-          'bg-cyan-600': isInfo(item.status),}"
-        >
-        <div class="flex flex-row gap-x-2 px-2 ">
-          <div>
-            <img
-              v-if="isError(item.status)"
-              class="w-7 h-7"
-              src="@/assets/icons/icon-error.svg"
-            />
-            <img
-              v-else-if="isSuccess(item.status)"
-              class="w-7 h-7"
-              src="@/assets/icons/icon-success.svg"
-            />
-            <img
-              v-else-if="isLoading(item.status)"
-              class="w-7 h-7"
-              src="@/assets/icons/icon-loading.svg"
-            />
-            <img
-              v-else-if="isInfo(item.status)"
-              class="w-7 h-7"
-              src="@/assets/icons/icon-info.svg"
-            />
-          </div>
-          <div class="text-slate-50">
-            {{ item.text }}
-          </div>
-        </div>
-        <div v-if="item.time > 0" class="bg-slate-200 w-full h-1 self-start" :style="{'animation': item.time > 0 ? `timeLine ${item.time}ms linear forwards` : ''}"></div>
+      <div v-for="item in statusWindowApi.getAllStatusWindows" :key="item.id">
+
+        <statusWindowClassic
+          v-if="item.type === statusWindowApi.getTypes.classic" 
+          :status="StatusCodesToString(item.status)" 
+          :text="item.text" 
+          :time="item.time"
+          :closable="item.closable"
+          :show-animation="showAnimation"
+          :show-time-bar="showTimeBar"
+          @close-window="closeStatusWindow(item.id)"/>
+
+        <statusWindowBorder
+          v-else-if="item.type === statusWindowApi.getTypes.border" 
+          :status="StatusCodesToString(item.status)" 
+          :text="item.text" 
+          :time="item.time"
+          :closable="item.closable"
+          :show-animation="showAnimation"
+          :show-time-bar="showTimeBar"
+          @close-window="closeStatusWindow(item.id)"/>
+
+        <statusWindowDetailed
+          v-else 
+          :status="StatusCodesToString(item.status)" 
+          :text="item.text" 
+          :time="item.time"
+          :closable="item.closable"
+          :show-animation="showAnimation"
+          :show-time-bar="showTimeBar"
+          @close-window="closeStatusWindow(item.id)"/>
+
       </div>
     </TransitionGroup>
   </div>
 </template>
 <script lang="ts">
 
-import { StatusCodes, useStatusWindowAPI } from "../statusWindowAPI";
+import '../assets/style/style.css';
+import { useStatusWindowAPI, StatusCodes, ShowAnimation, ShowTimeBar } from "../statusWindowAPI";
+import statusWindowClassic from './statusWindowClassic.vue';
+import statusWindowBorder from './statusWindowBorder.vue';
+import statusWindowDetailed from './statusWindowDetailed.vue';
 
 export default {
+  components: {
+    statusWindowClassic,
+    statusWindowBorder,
+    statusWindowDetailed,
+  },
   data() {
     return{
       statusWindowApi: useStatusWindowAPI(),
+      showAnimation: ShowAnimation,
+      showTimeBar: ShowTimeBar
     }
   },
   methods: {
-    isLoading(status: StatusCodes): Boolean{
-      return status === StatusCodes.loading;
+    StatusCodesToString(StatusCode: StatusCodes): string{
+      switch(StatusCode){
+        case StatusCodes.error: return 'error';
+        case StatusCodes.loading: return 'loading';
+        case StatusCodes.success: return 'success';
+        case StatusCodes.info: return 'info';
+      }
     },
-    isSuccess(status: StatusCodes): Boolean{
-      return status === StatusCodes.success;
-    },
-    isError(status: StatusCodes): Boolean{
-      return status === StatusCodes.error;
-    },
-    isInfo(status: StatusCodes): Boolean{
-      return status === StatusCodes.info;
-    },
+    closeStatusWindow(id: number){
+      this.statusWindowApi.deleteStatusWindow(id);
+    }
   }
 };
 </script>
 <style scoped>
-
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease-out;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.5s ease-out;
+  }
+  .list-enter-from,
+  .list-leave-to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
 </style>
