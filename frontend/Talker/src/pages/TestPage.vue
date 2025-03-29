@@ -34,7 +34,7 @@ export default{
         }
     },
     mounted() {
-        const time = 5000;
+        const time = -1;
         const closable = true;
         this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic ,this.StatusWindowAPI.getCodes.error, 'Error!', time, closable);
         this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic ,this.StatusWindowAPI.getCodes.loading, 'Loading', time, closable);

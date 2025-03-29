@@ -21,6 +21,7 @@
           :closable="item.closable"
           :show-animation="showAnimation"
           :show-time-bar="showTimeBar"
+          :header-text="StatusCodesToString(item.status)"
           @close-window="closeStatusWindow(item.id)"/>
 
         <statusWindowDetailed
@@ -31,6 +32,7 @@
           :closable="item.closable"
           :show-animation="showAnimation"
           :show-time-bar="showTimeBar"
+          :header-text="StatusCodesToString(item.status)"
           @close-window="closeStatusWindow(item.id)"/>
 
       </div>

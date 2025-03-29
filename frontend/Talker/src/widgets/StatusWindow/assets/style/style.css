@@ -24,6 +24,7 @@
     background-color: var(--primary-color);
     color: var(--text-color-primary);
     border-radius: 6px 6px 0 0;
+    text-transform: capitalize;
   }
 
   .status-window-body{
@@ -32,6 +33,7 @@
     justify-content: start;
     align-items: center;
     column-gap: 8px;
+    width: 100%;
   }
   
   .status-window-text{
@@ -70,10 +72,27 @@
   }
   
   .status-window-border{
+    width: 300px;
     border-radius: 0 6px 6px 0;
     border-left: 4px solid var(--primary-color);
     background-color: var(--secondary-color);
     color: var(--text-color-secondary);
+
+    --text-color-secondary-border: #555555;
+  }
+  .status-window-border > .status-window-body{
+    column-gap: 16px;
+    padding: 0 8px;
+  }
+  .status-window-border-text-wrapper{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .status-window-border-header{
+    color: var(--primary-color);
+    font-weight: bold;
+    text-transform: capitalize;
   }
   .status-window-border > .status-window-timebar{
     background-color: var(--primary-color);
@@ -111,14 +130,16 @@
 }
 
 @layer status-window-recolors{
-  .status-window-detail > .status-window-body > div > .status-window-text, 
-  .status-window-border > .status-window-body > .status-window-text{
+  .status-window-detail > .status-window-body > .status-window-body-detail > .status-window-text{
     color: var(--text-color-secondary);
-    text-align: left;
   }
 
-  .status-window-detail > .status-window-body > div > .status-window-image, 
-  .status-window-detail > .status-window-body > div > .status-window-close, 
+  .status-window-border > .status-window-body > .status-window-border-text-wrapper > .status-window-text{
+    color: var(--text-color-secondary-border);
+  }
+
+  .status-window-detail > .status-window-body > .status-window-body-detail > .status-window-image, 
+  .status-window-detail > .status-window-body > .status-window-body-detail > .status-window-close, 
   .status-window-border > .status-window-body > .status-window-image,
   .status-window-border > .status-window-body > .status-window-close{
     filter: invert(0.75);

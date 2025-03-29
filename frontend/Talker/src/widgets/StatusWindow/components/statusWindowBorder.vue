@@ -1,6 +1,5 @@
 <template>
   <div class="status-window status-window-border" :class="`status-window-${status}`">
-
     <div class="status-window-body">
 
       <img v-if="status === 'error'" class="status-window-image" src="../assets/icons/icon-error.svg"/>
@@ -8,9 +7,13 @@
       <img v-else-if="status === 'loading'" class="status-window-image" src="../assets/icons/icon-loading.svg" />
       <img v-else-if="status === 'info'" class="status-window-image" src="../assets/icons/icon-info.svg" />
 
-      <p class="status-window-text">
-        {{ animatedText }}
-      </p>
+      <div class="status-window-border-text-wrapper">
+        <p class="status-window-border-header">{{ headerText }}</p>
+        <p class="status-window-text">
+          {{ animatedText }}
+        </p>
+      </div>
+
       <img v-if="closable" class="status-window-close" src="../assets/icons/icon-close.svg" @click="$emit('closeWindow')"/>
     </div>
 
@@ -27,6 +30,11 @@ export default {
     status: {
       type: String,
       required: true,
+    },
+    headerText: {
+      type: String,
+      required: false,
+      default: 'Alert'
     },
     text: {
       type: String,
