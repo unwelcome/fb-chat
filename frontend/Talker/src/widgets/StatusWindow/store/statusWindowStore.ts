@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { StatusTypes, StatusCodes, StatusWindowTime, type IStatusWindow } from "../statusWindowAPI";
+import { StatusTypes, StatusCodes, type IStatusWindow } from "../statusWindowAPI";
 
 export const useStatusWindowStore = defineStore('statusWindow', {
   state() {
@@ -9,9 +9,21 @@ export const useStatusWindowStore = defineStore('statusWindow', {
     }
   },
   actions: {
-    showStatusWindow(type: StatusTypes, status: StatusCodes, text: string, time: number = StatusWindowTime, closable: boolean = false): number{
+    showStatusWindow(type: StatusTypes, status: StatusCodes, text: string, time: number, closable: boolean, showAnimation: boolean, showTimeBar: boolean, headerText: string): number{
       const newStatusWindowID: number = this.statusWindowID++;
-      const newStatusWindow: IStatusWindow = {id: newStatusWindowID, type: type, status: status, text: text, time: time, closable: closable};
+
+      const newStatusWindow: IStatusWindow = {
+        id: newStatusWindowID, 
+        type: type, 
+        status: status, 
+        text: text, 
+        time: time, 
+        closable: closable, 
+        showAnimation: showAnimation, 
+        showTimeBar: showTimeBar, 
+        headerText: headerText
+      };
+
       this.statusWindowList.push(newStatusWindow);
 
       if(time > 0){

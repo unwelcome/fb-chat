@@ -20,7 +20,7 @@
 import { API_SignUp } from '@/api/api';
 import { ValidUserLogin, ValidUserPassword } from '@/helpers/validator';
 import { type IValidator, type ISignUp } from '@/helpers/constants';
-import { useStatusWindowAPI, StatusCodes } from '@/widgets/StatusWindow/statusWindowAPI';
+import { useStatusWindowAPI } from '@/widgets/StatusWindow/statusWindowAPI';
 
 import loginInput from '@/shared/loginInput.vue';
 
@@ -44,7 +44,7 @@ export default {
     },
     initLogIn(){
       if(this.loginValid.value !== '' && this.passwordValid.value !== '') {
-        const stID = this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.loading, 'Creating account...', -1);
+        const stID = this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.loading, text: 'Creating account', time: -1});
 
         const uid = + Math.floor(Math.random() * 100000 + 1);
 
@@ -60,7 +60,7 @@ export default {
         API_SignUp(body)
         .then((res: any) => {
           this.StatusWindowAPI.deleteStatusWindow(stID);
-          this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.success, 'Account created successfully!');
+          this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.success, text: 'Account created successfully!'});
 
           document.cookie = `access_token=${res.data.jwt}; expires=${Math.floor(Date.now() / 1000) + (60 * 2)};`;
 
@@ -68,16 +68,16 @@ export default {
         })
         .catch((err) => {
           this.StatusWindowAPI.deleteStatusWindow(stID);
-          if(err.status === 405) this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'User already exist!');
-          else this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'Server error, try later!');
+          if(err.status === 405) this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'User already exist!'});
+          else this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Server error, try later!'});
         })
       }
 
       if(this.loginValid.value === ''){
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'Login is missed!', 2000);
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Login is missed!'});
       }
       if(this.passwordValid.value === ''){
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'Password is missed!', 2000);
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Password is missed!'});
       }
     }
   }

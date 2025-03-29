@@ -36,20 +36,20 @@ export default{
     mounted() {
         const time = -1;
         const closable = true;
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic ,this.StatusWindowAPI.getCodes.error, 'Error!', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic ,this.StatusWindowAPI.getCodes.loading, 'Loading', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic ,this.StatusWindowAPI.getCodes.info, 'Info!', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic ,this.StatusWindowAPI.getCodes.success, 'Success', time, closable);
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Error!', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.loading, text: 'Loading', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.info, text: 'Info', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.success, text: 'Success', time: time, closable: closable});
+        
+        this.StatusWindowAPI.createStatusWindow({type: this.StatusWindowAPI.getTypes.border, status: this.StatusWindowAPI.getCodes.error, text: 'Error!', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({type: this.StatusWindowAPI.getTypes.border, status: this.StatusWindowAPI.getCodes.loading, text: 'Loading', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({type: this.StatusWindowAPI.getTypes.border, status: this.StatusWindowAPI.getCodes.info, text: 'Info', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({type: this.StatusWindowAPI.getTypes.border, status: this.StatusWindowAPI.getCodes.success, text: 'Success', time: time, closable: closable});
 
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.border ,this.StatusWindowAPI.getCodes.error, 'Error!', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.border ,this.StatusWindowAPI.getCodes.loading, 'Loading', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.border ,this.StatusWindowAPI.getCodes.info, 'Info!', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.border ,this.StatusWindowAPI.getCodes.success, 'Success', time, closable);
-
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.detail ,this.StatusWindowAPI.getCodes.error, 'This alert contains additional infromation, such as steps the user can follow to resolve the situation', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.detail ,this.StatusWindowAPI.getCodes.loading, 'This alert contains additional infromation, such as steps the user can follow to resolve the situation', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.detail ,this.StatusWindowAPI.getCodes.info, 'This alert contains additional infromation, such as steps the user can follow to resolve the situation', time, closable);
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.detail ,this.StatusWindowAPI.getCodes.success, 'This alert contains additional infromation, such as steps the user can follow to resolve the situation', time, closable);
+        this.StatusWindowAPI.createStatusWindow({type: this.StatusWindowAPI.getTypes.detail, status: this.StatusWindowAPI.getCodes.error, text: 'This alert contains additional infromation, such as steps the user can follow to resolve the situation', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({type: this.StatusWindowAPI.getTypes.detail, status: this.StatusWindowAPI.getCodes.loading, text: 'This alert contains additional infromation, such as steps the user can follow to resolve the situation', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({type: this.StatusWindowAPI.getTypes.detail, status: this.StatusWindowAPI.getCodes.info, text: 'This alert contains additional infromation, such as steps the user can follow to resolve the situation', time: time, closable: closable});
+        this.StatusWindowAPI.createStatusWindow({type: this.StatusWindowAPI.getTypes.detail, status: this.StatusWindowAPI.getCodes.success, text: 'This alert contains additional infromation, such as steps the user can follow to resolve the situation', time: time, closable: closable});
     }
 }
 </script>

@@ -45,7 +45,7 @@ export default {
     },
     initLogIn(){
       if(this.loginValid.value !== '' && this.passwordValid.value !== '') {
-        const stID = this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.loading, 'Verifying...', -1);
+        const stID = this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.loading, text: 'Verifying', time: -1});
         
         const body: ILogIn = {
           login: this.loginValid.value,
@@ -55,7 +55,7 @@ export default {
         API_LogIn(body)
         .then((res: any) => {
           this.StatusWindowAPI.deleteStatusWindow(stID);
-          this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.success, 'You are verified successfully!');
+          this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.success, text: 'You are verified successfully!'});
 
           document.cookie = `access_token=${res.data.jwt}; expires=${Math.floor(Date.now() / 1000) + (60 * 2)};`;
 
@@ -63,15 +63,15 @@ export default {
         })
         .catch((err) => {
           this.StatusWindowAPI.deleteStatusWindow(stID);
-          this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'User not found!');
+          this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'User not found!'});
         })
       }
 
       if(this.loginValid.value === ''){
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'Login is missed!', 2000);
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Login is missed!'});
       }
       if(this.passwordValid.value === ''){
-        this.StatusWindowAPI.createStatusWindow(this.StatusWindowAPI.getTypes.classic, this.StatusWindowAPI.getCodes.error, 'Password is missed!', 2000);
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Password is missed!'});
       }
     }
   }

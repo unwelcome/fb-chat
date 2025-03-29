@@ -1,8 +1,6 @@
 import { useStatusWindowStore } from "./store/statusWindowStore";
 
-export const StatusWindowTime = 2000;
-export const ShowAnimation = true;
-export const ShowTimeBar = true;
+//special types
 export enum StatusCodes {
     'error', 'info', 'loading', 'success'
 };
@@ -15,17 +13,43 @@ export interface IStatusWindow{
     status: StatusCodes,
     text: string,
     time: number,
-    closable: boolean
+    closable: boolean,
+    showAnimation: boolean,
+    showTimeBar: boolean,
+    headerText: string,
 };
-
+export interface IStatusWindowCreate{
+    type?: StatusTypes,
+    status: StatusCodes,
+    text: string,
+    time?: number,
+    closable?: boolean,
+    showAnimation?: boolean,
+    showTimeBar?: boolean,
+    headerText?: string,
+}
+//default status window config
+const StatusWindowType = StatusTypes.border;
+const StatusWindowTime = 3000;
+const StatusWindowClosable = true;
+const ShowAnimation = true;
+const ShowTimeBar = true;
+//API
 export function useStatusWindowAPI() {
     const statusWindowStore = useStatusWindowStore();
 
-    const createStatusWindow = (type: StatusTypes, status: StatusCodes, text: string, time:number = StatusWindowTime, closable:boolean = false) => {
-        return statusWindowStore.showStatusWindow(type, status, text, time, closable);
+    const createStatusWindow = (obj: IStatusWindowCreate): number => {
+        const type = (obj.type === undefined) ? StatusWindowType : obj.type;
+        const time = (obj.time === undefined) ? StatusWindowTime : obj.time;
+        const closable = (obj.closable === undefined) ? StatusWindowClosable : obj.closable;
+        const showAnimation = (obj.showAnimation === undefined) ? ShowAnimation : obj.showAnimation;
+        const showTimeBar = (obj.showTimeBar === undefined) ? ShowTimeBar : obj.showTimeBar;
+        const headerText = (obj.headerText === undefined) ? statusCodesToString(obj.status) : obj.headerText;
+
+        return statusWindowStore.showStatusWindow(type, obj.status, obj.text, time, closable, showAnimation, showTimeBar, headerText);
     };
     
-    const updateStatusWindowText = (id: number, text: string) => {
+    const updateStatusWindowText = (id: number, text: string): boolean => {
         return statusWindowStore.updateStatusWindowText(id, text);
     };
 
@@ -33,15 +57,25 @@ export function useStatusWindowAPI() {
         return statusWindowStore.deleteStatusWindow(id);
     };
     
-    const deleteAllStatusWindows = () => {
+    const deleteAllStatusWindows = (): boolean => {
         return statusWindowStore.deleteAllStatusWindows();
     };
+
+    const statusCodesToString = (status: StatusCodes): string => {
+        switch(status){
+          case StatusCodes.error: return 'error';
+          case StatusCodes.loading: return 'loading';
+          case StatusCodes.success: return 'success';
+          case StatusCodes.info: return 'info';
+        }
+    }
     
     return {
         createStatusWindow,
         updateStatusWindowText,
         deleteStatusWindow,
         deleteAllStatusWindows,
+        statusCodesToString,
         getTypes: StatusTypes,
         getCodes: StatusCodes,
         getTime: StatusWindowTime,

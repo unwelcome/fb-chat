@@ -5,34 +5,34 @@
 
         <statusWindowClassic
           v-if="item.type === statusWindowApi.getTypes.classic" 
-          :status="StatusCodesToString(item.status)" 
+          :status="statusWindowApi.statusCodesToString(item.status)" 
           :text="item.text" 
           :time="item.time"
           :closable="item.closable"
-          :show-animation="showAnimation"
-          :show-time-bar="showTimeBar"
+          :show-animation="item.showAnimation"
+          :show-time-bar="item.showTimeBar"
           @close-window="closeStatusWindow(item.id)"/>
 
         <statusWindowBorder
           v-else-if="item.type === statusWindowApi.getTypes.border" 
-          :status="StatusCodesToString(item.status)" 
+          :status="statusWindowApi.statusCodesToString(item.status)" 
           :text="item.text" 
           :time="item.time"
           :closable="item.closable"
-          :show-animation="showAnimation"
-          :show-time-bar="showTimeBar"
-          :header-text="StatusCodesToString(item.status)"
+          :show-animation="item.showAnimation"
+          :show-time-bar="item.showTimeBar"
+          :header-text="item.headerText"
           @close-window="closeStatusWindow(item.id)"/>
 
         <statusWindowDetailed
           v-else 
-          :status="StatusCodesToString(item.status)" 
+          :status="statusWindowApi.statusCodesToString(item.status)" 
           :text="item.text" 
           :time="item.time"
           :closable="item.closable"
-          :show-animation="showAnimation"
-          :show-time-bar="showTimeBar"
-          :header-text="StatusCodesToString(item.status)"
+          :show-animation="item.showAnimation"
+          :show-time-bar="item.showTimeBar"
+          :header-text="item.headerText"
           @close-window="closeStatusWindow(item.id)"/>
 
       </div>
@@ -42,7 +42,7 @@
 <script lang="ts">
 
 import '../assets/style/style.css';
-import { useStatusWindowAPI, StatusCodes, ShowAnimation, ShowTimeBar } from "../statusWindowAPI";
+import { useStatusWindowAPI } from "../statusWindowAPI";
 import statusWindowClassic from './statusWindowClassic.vue';
 import statusWindowBorder from './statusWindowBorder.vue';
 import statusWindowDetailed from './statusWindowDetailed.vue';
@@ -56,19 +56,9 @@ export default {
   data() {
     return{
       statusWindowApi: useStatusWindowAPI(),
-      showAnimation: ShowAnimation,
-      showTimeBar: ShowTimeBar
     }
   },
   methods: {
-    StatusCodesToString(StatusCode: StatusCodes): string{
-      switch(StatusCode){
-        case StatusCodes.error: return 'error';
-        case StatusCodes.loading: return 'loading';
-        case StatusCodes.success: return 'success';
-        case StatusCodes.info: return 'info';
-      }
-    },
     closeStatusWindow(id: number){
       this.statusWindowApi.deleteStatusWindow(id);
     }
