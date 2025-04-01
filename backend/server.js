@@ -3,11 +3,10 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 const router = require('./routers/router.js');
-require('dotenv').config();
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = 3000;
-const sessions = {}; 
 
 // Проверка NODE_ENV
 console.log('NODE_ENV:', process.env.NODE_ENV);
@@ -15,32 +14,20 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 // Middleware для парсинга JSON
 app.use(bodyParser.json());
 
-//Middleware для сессий
+// Middleware для парсинга JSON 
 app.use(session({
-  secret: 'top-secret-key',
+  secret: 'top_secret_key',
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
     sameSite: 'lax',
   },
-  store: {
-    get: (sid, callback) => {
-      callback(null, sessions[sid] || null);
-    },
-    set: (sid, session, callback) => {
-      sessions[sid] = session;
-      callback(null);
-    },
-    destroy: (sid, callback) => {
-      delete sessions[sid];
-      callback(null);
-    },
-  },
   genid: (req) => {
     return uuidv4();
   }
 }));
+
 
 //роутинг  
 app.use('/api', router);

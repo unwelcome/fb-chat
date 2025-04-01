@@ -28,7 +28,7 @@ const {
 router.post('/register', sessionRegister);
 router.post('/login', sessionLogin);
 router.get('/profile', sessionMiddleware, sessionProfile);
-router.post('logout', sessionLogout);
+router.post('/logout', sessionLogout);
 router.get('/data', sessionData);
 
 module.exports = router;

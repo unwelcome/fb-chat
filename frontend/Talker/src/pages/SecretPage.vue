@@ -4,15 +4,17 @@
 
       <p>{{ message }}</p>
 
-
-      <p>{{ sessionData }}</p>
-      <input type="button" value="Load Data" @click="loadData"/>
-
+      <div>
+        <p>Message: {{ sessionData.message }}</p>
+        <p>RandomValue: {{ sessionData.randomValue }}</p>
+      </div>
+      <input type="button" value="Load Data" class="btn btn-main" @click="loadData"/>
+      <input type="button" value="Logout" class="btn btn-main" @click="logOut"/>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { API_SessionProfile, API_SessionData } from '@/api/api';
+import { API_SessionProfile, API_SessionData, API_SessionLogout } from '@/api/api';
 import { useStatusWindowAPI } from '@/widgets/StatusWindow/statusWindowAPI';
 
 export default {
@@ -20,7 +22,7 @@ export default {
     return {
       StatusWindowAPI: useStatusWindowAPI(),
       message: '',
-      sessionData: ''
+      sessionData: {message: '', randomValue: ''}
     }
   },
   mounted() {
@@ -30,6 +32,7 @@ export default {
     })
     .catch((err) => {
       this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Profile get error'});
+      this.$router.push({name: 'WelcomePage'});
     })
     
   },
@@ -41,6 +44,15 @@ export default {
       })
       .catch(err => {
         this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Load data error'});
+      })
+    },
+    logOut(){
+      API_SessionLogout()
+      .then(res => {
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.success, text: 'Logout successful!'});
+      })
+      .catch(err => {
+        this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Logout error!'});
       })
     }
   }

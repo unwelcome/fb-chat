@@ -17,24 +17,27 @@ function sessionMiddleware(req, res, next) {
 }
 
 function checkUserExist(login, password=null){
+    console.log('login: ', login);
+    console.log('password: ', password);
+    console.log(users);
     if(users[login] && password === null) return true;
     if(users[login] && password === users[login]) return true;
     return false;
 }
 
 const sessionRegister = (req, res) => {
-  const { login, password } = req.body;
-  const passwordSHA256 = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+    const { login, password } = req.body;
+    const passwordSHA256 = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
 
-  if(checkUserExist(login)){
-    console.log('singup: user already exist!');
-    res.status(405).json({message: 'user already exist!'});
-  }
-  else{
-    console.log('signup: creating new user!');
-    users[login] = passwordSHA256;
-    console.log(users);
-  } 
+    if(checkUserExist(login)){
+        console.log('singup: user already exist!');
+        res.status(405).json({message: 'user already exist!'});
+    }
+    else{
+        console.log('signup: creating new user!');
+        users[login] = passwordSHA256;
+        res.status(200).json({message: 'Registration successful!'});
+    } 
 }
 
 const sessionLogin = (req, res) => {
