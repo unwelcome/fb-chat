@@ -17,7 +17,7 @@
 </template>
 <script lang="ts">
 
-import { API_LogIn } from '@/api/api';
+import { API_LogIn, API_SessionLogIn } from '@/api/api';
 import { ValidUserLogin, ValidUserPassword } from '@/helpers/validator';
 import { type IValidator, type ILogIn } from '@/helpers/constants';
 import { useStatusWindowAPI } from '@/widgets/StatusWindow/statusWindowAPI';
@@ -52,12 +52,13 @@ export default {
           password: this.passwordValid.value,
         };
 
-        API_LogIn(body)
+        // API_LogIn(body)
+        API_SessionLogIn(body)
         .then((res: any) => {
           this.StatusWindowAPI.deleteStatusWindow(stID);
           this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.success, text: 'You are verified successfully!'});
 
-          document.cookie = `access_token=${res.data.jwt}; expires=${Math.floor(Date.now() / 1000) + (60 * 2)};`;
+          // document.cookie = `access_token=${res.data.jwt}; expires=${Math.floor(Date.now() / 1000) + (60 * 2)};`;
 
           this.$router.push({name: 'SecretPage'});
         })

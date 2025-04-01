@@ -18,39 +18,39 @@ const sendHello = (req, res) => {
 }
 
 const loginController = (req, res) => {
-    const { login, password } = req.body;
-    const passwordSHA256 = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
-  
-    if(checkUserExist(login, passwordSHA256)){
-      console.log('login: user found!');
-  
-      const token = JWT.sign({ login: login, password: passwordSHA256 }, JWT_KEY);
-      console.log(token);
-      res.status(202).json({jwt: token});
-    }
-    else{
-      console.log('login: user not found!');
-      res.status(404).json({message: 'wrong data!'});
-    }
+  const { login, password } = req.body;
+  const passwordSHA256 = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+
+  if(checkUserExist(login, passwordSHA256)){
+    console.log('login: user found!');
+
+    const token = JWT.sign({ login: login, password: passwordSHA256 }, JWT_KEY);
+    console.log(token);
+    res.status(202).json({jwt: token});
+  }
+  else{
+    console.log('login: user not found!');
+    res.status(404).json({message: 'wrong data!'});
+  }
 }
 
 const signUpController = (req, res) => {
-    const { login, password, name, surname, tagname, email } = req.body;
-    const passwordSHA256 = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
-  
-    if(checkUserExist(login)){
-      console.log('singup: user already exist!');
-      res.status(405).json({message: 'user already exist!'});
-    }
-    else{
-      console.log('signup: creating new user!');
-      users.push({login: login, password: passwordSHA256});
-      console.log(users);
-  
-      const token = JWT.sign({ login: login, password: passwordSHA256, exp: Math.floor(Date.now() / 1000) + (60 * 2)}, JWT_KEY);
-      console.log(token);
-      res.status(200).json({jwt: token});
-    } 
+  const { login, password, name, surname, tagname, email } = req.body;
+  const passwordSHA256 = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+
+  if(checkUserExist(login)){
+    console.log('singup: user already exist!');
+    res.status(405).json({message: 'user already exist!'});
+  }
+  else{
+    console.log('signup: creating new user!');
+    users.push({login: login, password: passwordSHA256});
+    console.log(users);
+
+    const token = JWT.sign({ login: login, password: passwordSHA256, exp: Math.floor(Date.now() / 1000) + (60 * 2)}, JWT_KEY);
+    console.log(token);
+    res.status(200).json({jwt: token});
+  } 
 }
 
 const secretController = (req, res) => {

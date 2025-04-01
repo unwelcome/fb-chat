@@ -17,7 +17,7 @@
 </template>
 <script lang="ts">
 
-import { API_SignUp } from '@/api/api';
+import { API_SignUp, API_SessionRegister, API_SessionLogIn } from '@/api/api';
 import { ValidUserLogin, ValidUserPassword } from '@/helpers/validator';
 import { type IValidator, type ISignUp } from '@/helpers/constants';
 import { useStatusWindowAPI } from '@/widgets/StatusWindow/statusWindowAPI';
@@ -57,14 +57,20 @@ export default {
           email: 'test' + uid + '@mail.ru'
         };
 
-        API_SignUp(body)
+        // API_SignUp(body)
+        API_SessionRegister(body)
         .then((res: any) => {
           this.StatusWindowAPI.deleteStatusWindow(stID);
-          this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.success, text: 'Account created successfully!'});
+          //авторизация для получения сессии
+          API_SessionLogIn(body)
+          .then((res: any) => {
+            this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.success, text: 'Account created successfully!'});
 
-          document.cookie = `access_token=${res.data.jwt}; expires=${Math.floor(Date.now() / 1000) + (60 * 2)};`;
-
-          this.$router.push({name: 'SecretPage'});
+            this.$router.push({name: 'SecretPage'});
+          })
+          .catch(err => {
+            this.StatusWindowAPI.createStatusWindow({status: this.StatusWindowAPI.getCodes.error, text: 'Server error, try later!'});
+          });
         })
         .catch((err) => {
           this.StatusWindowAPI.deleteStatusWindow(stID);
