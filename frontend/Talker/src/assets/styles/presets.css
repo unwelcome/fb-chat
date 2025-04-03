@@ -3,17 +3,37 @@
   --bg-color-1: rgb(221, 221, 221);
   --input-color: rgb(199, 199, 199);
   --input-color-outline: rgb(0, 121, 202);
+  --input-color-outline-error: rgb(240, 133, 133);
   --btn-color-main: rgb(0, 151, 161);
   --btn-color-main-hover: rgb(0, 168, 180);
   --btn-color-main-active: rgb(0, 135, 145);
   --text-color: rgb(36, 36, 36);
   --text-color-btn: rgb(221, 221, 221);
   --text-color-link: rgb(0, 126, 165);
+  --text-color-error: rgb(213, 61, 61);
   --text-color-description: rgb(114, 114, 114);
   --scroll-track-color: rgb(59, 59, 59);
   --scroll-thumb-color: rgb(207, 207, 207);
   --scroll-bar-width: 6px;
   --scroll-bar-border-radius: calc(var(--scroll-bar-width) / 2);
+}
+
+.dark-theme {
+  --bg-color-0: rgb(47, 49, 54);
+  --bg-color-1: rgb(75, 78, 84);
+  --input-color: rgb(107, 106, 106);
+  --input-color-outline: rgb(93, 167, 216);
+  --input-color-outline-error: rgb(240, 133, 133);
+  --btn-color-main: rgb(0, 151, 161);
+  --btn-color-main-hover: rgb(0, 168, 180);
+  --btn-color-main-active: rgb(0, 135, 145);
+  --text-color: rgb(230, 230, 230);
+  --text-color-btn: rgb(221, 221, 221);
+  --text-color-link: rgb(19, 163, 207);
+  --text-color-error: rgb(240, 133, 133);
+  --text-color-description: rgb(164, 164, 164);
+  --scroll-track-color: rgb(59, 59, 59);
+  --scroll-thumb-color: rgb(207, 207, 207);
 }
 
 * {
@@ -75,6 +95,10 @@
 
 .text-color-link {
   color: var(--text-color-link);
+}
+
+.text-color-error {
+  color: var(--text-color-error);
 }
 
 @keyframes timeLine {

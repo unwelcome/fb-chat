@@ -13,7 +13,7 @@
       />
   </div>
   <div class="h-4">
-    <p class=" text-xs text-red-600">{{ errorMesssage }}</p>
+    <p class=" text-xs text-color-error">{{ errorMesssage }}</p>
   </div>
 
 </template>

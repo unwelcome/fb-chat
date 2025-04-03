@@ -20,6 +20,10 @@
       background-color: var(--btn-color-main-active);
     }
   }
+
+  &-theme{
+    padding: 4px 8px;
+  }
 }
 
 .input{
@@ -34,6 +38,6 @@
   }
 
   &-incorrect{
-    outline: 2px solid red;
+    outline: 2px solid var(--input-color-outline-error);
   }
 }
