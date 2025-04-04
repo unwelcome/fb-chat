@@ -6,7 +6,8 @@ const {
   signUpController, 
   secretController,
   jwtCheckController,
-  filesUploadController
+  filesUploadController,
+  avatarController,
 } = require('../controllers/controller');
 
 
@@ -16,6 +17,7 @@ router.post('/login', loginController);
 router.post('/signup', signUpController);
 
 router.post('/file-upload', filesUploadController);
+router.get('/avatar', avatarController);
 
 //middleware проверки jwt
 router.use('/auth', jwtCheckController);

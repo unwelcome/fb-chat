@@ -1,11 +1,21 @@
 <template>
-    <div class="flex flex-col items-stretch gap-4 bg-gray-200 rounded-lg p-4 max-w-[500px]">
+    <div class="flex flex-col">
         <!--Button select files-->
-        <slot name="selectFilesButton" @click="openSelectFilesWindow"></slot>
+        <div @click="openSelectFilesWindow">
+            <slot name="selectFilesButton"></slot>
+        </div>
         <!--selected files list-->
         <slot v-if="selectedFiles.length !== 0" name="filePreviev"></slot>
         <!--Button send files-->
-        <slot v-if="selectedFiles.length !== 0" name="sendFilesButton" @send-files="sendFiles"></slot>
+        <div v-if="selectedFiles.length !== 0" @click="sendFiles">
+            <slot name="sendFilesButton"></slot>
+        </div>
+        <!--Progress bar-->
+        <Transition>
+            <div v-if="$slots.progressBar && showProgressBar && isLoading">
+                <slot name="progressBar"></slot>
+            </div>
+        </Transition>
         <!--invisible input type=file-->
         <input type="file" class="invisible hidden w-0 h-0 absolute" :multiple="isMultiple" ref="selectFile" @change="handleFileChange" />
     </div>
@@ -27,8 +37,8 @@ export default {
             required: false,
             deafult: false,
         },
-        fileIdToRemove:{
-            type: [Number, null],
+        fileToRemove:{
+            type: [File, null],
             required: false,
             default: null
         },
@@ -40,29 +50,37 @@ export default {
             type: Function,
             requred: false,
             default: (progress: number) => {},
+        },
+        showProgressBar: {
+            type: Boolean,
+            required: false,
+            default: false, 
         }
     },
     data(){
         return{
             selectedFiles: [] as File[],
+            isLoading: false,
         }
     },
     methods: {
         handleFileChange(event: any) {
-            const files = event.target.files;
+            const files: File[] = event.target.files;
             if (files) {
                 this.selectedFiles = files;
-                console.log('Выбраны файлы:', files);
+                this.$emit('selectedFiles', this.selectedFiles);
             } 
-            else this.selectedFiles = [];
+            else this.selectedFiles = [] as File[];
         },
         sendFiles(){
             if(this.selectedFiles.length === 0) return;
 
+            this.isLoading = true;
+
             const sender = Upload<{message: string}>(
                 this.selectedFiles, 
                 this.sendUrl, 
-                {onProgress: this.onProgressFunc()}
+                {onProgress: (progress) => this.onProgressFunc(progress)}
             )
             
             sender.then((res) => {
@@ -72,11 +90,13 @@ export default {
                 this.$emit('loadError', err);
             })
             .finally(() => {
+                this.isLoading = false;
                 this.$emit('loadFinally');
             });
 
         },
         openSelectFilesWindow(){
+            console.log('click');
             (this.$refs.selectFile as HTMLInputElement).click();
         }
     },
@@ -87,11 +107,28 @@ export default {
                 this.$emit('isFilesSelectOpened');
             }
         },
-        fileIdToRemove(newVal){
+        fileToRemove(newVal){
             if(newVal !== null){
-                this.selectedFiles.splice(newVal, 1);
+                const newFiles = [] as File[];
+                for(let i = 0; i < this.selectedFiles.length; i++){
+                    if(this.selectedFiles[i] === newVal) continue;
+                    newFiles.push(this.selectedFiles[i]);
+                }
+                this.selectedFiles = newFiles;
+                this.$emit('selectedFiles', this.selectedFiles);
             }
         }
     }
 }
 </script>
+<style lang="css" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity .15s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

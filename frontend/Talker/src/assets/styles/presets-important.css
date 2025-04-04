@@ -10,6 +10,9 @@
   color: var(--text-color-btn);
   cursor: pointer;
   transition: background-color 0.15s ease-in;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .btn-main {
   background-color: var(--btn-color-main);

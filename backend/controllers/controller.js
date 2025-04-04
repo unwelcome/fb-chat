@@ -1,6 +1,8 @@
 const CryptoJS = require("crypto-js");
 const JWT = require('jsonwebtoken');
 const pool = require('../../db/db.js');
+const fs = require('fs'); // Import the 'fs' module
+const path = require('path'); // Import the 'path' module
 
 const JWT_KEY = 'my secret key';
 const users = [];
@@ -90,16 +92,29 @@ const filesUploadController = (req, res) => {
   const uploadedFiles = req.files.files;
 
   if (Array.isArray(uploadedFiles)) { // If multiple files were uploaded
-    let filesName = '';
-    uploadedFiles.forEach(file => {
-      filesName += file.name + ' ';
-      console.log('file.name: ', file.name);
-    });
-    res.status(200).json({ message: filesName });
+    res.status(200).json({ message: `uploaded ${uploadedFiles.length} files` });
   } 
   else { // If only one file was uploaded
-    res.status(200).json({ message: uploadedFiles.name });
+    res.status(200).json({ message: 'uploaded only one file' });
   }
+}
+
+const avatarController = (req, res) => {
+  const avatarPath = path.join(__dirname, '../cache/test photo.jpg');
+  if (!fs.existsSync(avatarPath)) {
+    return res.status(404).send('Avatar not found');
+  }
+  // Read the image file
+  fs.readFile(avatarPath, (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error reading avatar');
+    }
+
+    // Set the Content-Type header to indicate an image
+    res.writeHead(200, { 'Content-Type': 'image/jpeg' }); // Change image/jpeg to the correct MIME type for your avatar
+    res.end(data); // Send the image data as the response
+  });
 }
 
 // Роут для получения всех пользователей
@@ -119,5 +134,6 @@ module.exports = {
   signUpController,
   secretController,
   jwtCheckController,
-  filesUploadController
+  filesUploadController,
+  avatarController,
 };

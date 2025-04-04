@@ -10,6 +10,7 @@
   color: var(--text-color-btn);
   cursor: pointer;
   transition: background-color .15s ease-in;
+  user-select: none;
 
   &-main{
     background-color: var(--btn-color-main);
