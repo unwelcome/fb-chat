@@ -26,7 +26,19 @@ const router = createRouter({
     {
       path: '/test',
       name: 'TestPage',
-      component: () => import('../pages/TestPage.vue'),
+      component: () => import('../pages/TestPage/TestPage.vue'),
+      children: [
+        {
+          path: 'search',
+          name: 'SearchFindPage',
+          component: () => import('../pages/TestPage/subPages/searchFindListPage.vue'),
+        },
+        {
+          path: 'files',
+          name: 'LoadFilePage',
+          component: () => import('../pages/TestPage/subPages/loadFilePage.vue'),
+        }
+      ]
     },
   ],
 })

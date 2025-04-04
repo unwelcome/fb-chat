@@ -6,7 +6,7 @@
 .btn{
   padding: 8px 16px;
   font-size: 20px;
-  border-radius: 10px;
+  border-radius: 6px;
   color: var(--text-color-btn);
   cursor: pointer;
   transition: background-color .15s ease-in;
@@ -21,9 +21,24 @@
     }
   }
 
+  &-file{
+    fill: var(--text-color-btn);
+    background-color: var(--btn-color-file);
+    &:hover{
+      background-color: var(--btn-color-file-hover);
+    }
+    &:active{
+      background-color: var(--btn-color-file-active);
+    }
+  }
+
   &-theme{
     padding: 4px 8px;
+    font-size: 16px;
   }
+}
+.btn *{
+  cursor: pointer;
 }
 
 .input{

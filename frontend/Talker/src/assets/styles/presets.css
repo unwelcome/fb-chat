@@ -7,6 +7,9 @@
   --btn-color-main: rgb(0, 151, 161);
   --btn-color-main-hover: rgb(0, 168, 180);
   --btn-color-main-active: rgb(0, 135, 145);
+  --btn-color-file: rgb(161, 51, 0);
+  --btn-color-file-hover: rgb(188, 60, 0);
+  --btn-color-file-active: rgb(132, 43, 2);
   --text-color: rgb(36, 36, 36);
   --text-color-btn: rgb(221, 221, 221);
   --text-color-link: rgb(0, 126, 165);
@@ -42,6 +45,9 @@
   outline: none;
   text-decoration: none;
   color: var(--text-color);
+}
+
+h1, h2, h3, h4, h5, h6, p, span {
   cursor: default;
 }
 

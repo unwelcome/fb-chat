@@ -2,8 +2,9 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const router = require('./routers/router.js');
-const { v4: uuidv4 } = require('uuid');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
@@ -11,22 +12,21 @@ const PORT = 3000;
 // Проверка NODE_ENV
 console.log('NODE_ENV:', process.env.NODE_ENV);
 
+// Middleware cors
+app.use(cors())
+
 // Middleware для парсинга JSON
 app.use(bodyParser.json());
 
-// Middleware для парсинга JSON 
-app.use(session({
-  secret: 'top_secret_key',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    sameSite: 'lax',
-  },
-  genid: (req) => {
-    return uuidv4();
-  }
+// Middleware для загрузки файлов
+app.use(fileUpload({
+  createParentPath: true
 }));
+
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  next();
+});
 
 
 //роутинг  

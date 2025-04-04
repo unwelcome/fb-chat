@@ -14,7 +14,7 @@ function checkUserExist(login, password=-1){
 }
 
 const sendHello = (req, res) => {
-    res.json({ message: 'Hello from Express mzfk!' });
+  res.json({ message: 'Hello from Express mzfk!' });
 }
 
 const loginController = (req, res) => {
@@ -54,32 +54,52 @@ const signUpController = (req, res) => {
 }
 
 const secretController = (req, res) => {
-    res.status(200).json({secret: 'PHINEAS\'S PLAKTYPUS IS A PERRY THE PLATYPUS!!!'});
+  res.status(200).json({secret: 'PHINEAS\'S PLAKTYPUS IS A PERRY THE PLATYPUS!!!'});
 }
 
 const jwtCheckController = (req, res, next) => {
-    const [_, token] = req.headers.authorization.trim().split(' ');
-  
-    if(token === undefined){
-      res.status(400).json({message: 'Invalid JWT!'});
-      return;
+  const [_, token] = req.headers.authorization.trim().split(' ');
+
+  if(token === undefined){
+    res.status(400).json({message: 'Invalid JWT!'});
+    return;
+  }
+
+  JWT.verify(token, JWT_KEY, function(err, decoded) {
+    if(!decoded){
+      res.status(401).json({message: 'The token has expired'});
+      return false;
     }
-  
-    JWT.verify(token, JWT_KEY, function(err, decoded) {
-      if(!decoded){
-        res.status(401).json({message: 'The token has expired'});
+    else {
+      if(checkUserExist(decoded.login, decoded.password)){
+        next();
+      }
+      else{
+        res.status(403).json({message: 'User not found!'});
         return false;
       }
-      else {
-        if(checkUserExist(decoded.login, decoded.password)){
-          next();
-        }
-        else{
-          res.status(403).json({message: 'User not found!'});
-          return false;
-        }
-      }
+    }
+  });
+}
+
+const filesUploadController = (req, res) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  const uploadedFiles = req.files.files;
+
+  if (Array.isArray(uploadedFiles)) { // If multiple files were uploaded
+    let filesName = '';
+    uploadedFiles.forEach(file => {
+      filesName += file.name + ' ';
+      console.log('file.name: ', file.name);
     });
+    res.status(200).json({ message: filesName });
+  } 
+  else { // If only one file was uploaded
+    res.status(200).json({ message: uploadedFiles.name });
+  }
 }
 
 // Роут для получения всех пользователей
@@ -98,5 +118,6 @@ module.exports = {
   loginController,
   signUpController,
   secretController,
-  jwtCheckController
+  jwtCheckController,
+  filesUploadController
 };

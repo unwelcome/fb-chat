@@ -1,7 +1,7 @@
 <template>
-  <header class="w-full bg-color-1 fixed flex flex-row items-center px-10 py-1">
+  <header v-if="false" class="w-full bg-color-1 fixed flex flex-row items-center px-10 py-1">
     <label class="text-lg flex flex-row items-center gap-2 cursor-pointer">
-      <input type="button" class="btn btn-main btn-theme" @click="theme = !theme" :value="(theme ? 'Dark' : 'Ligth') + ' theme'"/>
+      <input type="button" class="btn btn-main btn-theme" @click="theme = !theme" :value="(theme ? 'Ligth' : 'Dark') + ' theme'"/>
     </label>
   </header>
   <StatusWindow />
